@@ -50,3 +50,9 @@ def name_analysis(names:list):
     name_length = list(map(lambda x: len(x),names))
     print("average name length: {}".format(np.average(name_length)))
     print("median name length: {}".format(np.median(name_length)))
+
+
+name_analysis(names)
+create_character_histogram(names)
+create_word_cloud(names)
+show_name_length_distribution(names)
