@@ -1,0 +1,252 @@
+date,time,log_type,info
+2024-02-25,09:15:32,INFO,Application start
+2024-02-25,09:16:10,INFO,User 'admin' logged in
+2024-02-25,09:19:05,INFO,Starting data sync operation
+2024-02-25,09:19:30,INFO,Data sync operation retried
+2024-02-25,09:20:00,INFO,Application shutdown
+2024-02-26,10:05:22,INFO,Application start
+2024-02-26,10:07:42,INFO,New user 'guest' created
+2024-02-26,10:09:00,INFO,User 'guest' logged out
+2024-02-26,10:12:45,INFO,Scheduled maintenance mode activated
+2024-02-26,10:15:05,INFO,Application resumed normal operationy
+2024-02-26,11:13:46,INFO,Starting data sync operation
+2024-02-26,15:15:05,INFO,Starting data sync operation
+2024-02-26,15:41:25,INFO,Application start
+2024-02-26,18:01:15,INFO,User 'guest' logged out
+2024-02-26,19:57:51,INFO,User 'guest' logged out
+2024-02-26,20:55:11,INFO,User 'admin' logged in
+2024-02-26,21:27:17,INFO,Application start
+2024-02-26,21:53:56,INFO,Application start
+2024-02-27,02:22:47,INFO,Application shutdown
+2024-02-27,09:16:38,INFO,Data sync operation retried
+2024-02-27,17:26:07,INFO,Scheduled maintenance mode activated
+2024-02-27,20:28:43,INFO,Application shutdown
+2024-02-27,23:29:54,INFO,Application resumed normal operation
+2024-02-28,05:50:59,INFO,Starting data sync operation
+2024-02-28,07:17:36,INFO,User 'guest' logged out
+2024-02-28,11:06:31,INFO,Application resumed normal operation
+2024-02-28,15:30:45,INFO,Starting data sync operation
+2024-02-28,15:56:45,INFO,Application start
+2024-02-28,17:19:04,INFO,Application resumed normal operation
+2024-02-28,17:56:30,INFO,Scheduled maintenance mode activated
+2024-02-29,01:03:39,INFO,Application resumed normal operation
+2024-02-29,02:38:18,INFO,Application resumed normal operation
+2024-02-29,03:09:18,INFO,User 'admin' logged in
+2024-02-29,03:19:51,INFO,Starting data sync operation
+2024-02-29,07:34:47,INFO,Application shutdown
+2024-02-29,13:23:34,INFO,Application shutdown
+2024-02-29,17:59:57,INFO,Application start
+2024-02-29,19:13:19,INFO,Application resumed normal operation
+2024-02-29,19:29:40,INFO,User 'admin' logged in
+2024-02-29,23:42:06,INFO,Application start
+2024-03-01,02:33:26,INFO,User 'guest' logged out
+2024-03-01,03:12:30,INFO,Application start
+2024-03-01,03:33:36,INFO,User 'guest' logged out
+2024-03-01,10:33:03,INFO,Application shutdown
+2024-03-01,15:01:46,INFO,Application shutdown
+2024-03-01,16:09:02,INFO,New user 'guest' created
+2024-03-01,16:58:01,INFO,New user 'guest' created
+2024-03-01,17:33:32,INFO,Application start
+2024-03-02,01:05:10,INFO,Application resumed normal operation
+2024-03-02,01:06:52,INFO,Data sync operation retried
+2024-03-02,01:44:06,INFO,Application shutdown
+2024-03-02,03:03:46,INFO,Application shutdown
+2024-03-02,08:40:25,INFO,Application shutdown
+2024-03-02,12:09:31,INFO,New user 'guest' created
+2024-03-02,13:32:26,INFO,User 'guest' logged out
+2024-03-02,18:47:33,INFO,Application shutdown
+2024-03-02,22:29:43,INFO,New user 'guest' created
+2024-03-03,03:20:32,INFO,Starting data sync operation
+2024-03-03,10:49:46,INFO,Scheduled maintenance mode activated
+2024-03-03,10:50:08,INFO,Data sync operation retried
+2024-03-03,13:06:52,INFO,User 'guest' logged out
+2024-03-03,13:56:00,INFO,Data sync operation retried
+2024-03-03,14:36:51,INFO,Application resumed normal operation
+2024-03-03,16:01:55,INFO,Starting data sync operation
+2024-03-03,17:50:38,INFO,Data sync operation retried
+2024-03-03,19:03:29,INFO,Data sync operation retried
+2024-03-03,20:22:45,INFO,New user 'guest' created
+2024-03-03,21:45:57,INFO,User 'admin' logged in
+2024-03-03,22:38:51,INFO,Scheduled maintenance mode activated
+2024-03-04,02:41:07,INFO,User 'admin' logged in
+2024-03-04,03:02:10,INFO,Scheduled maintenance mode activated
+2024-03-04,05:03:47,INFO,Application start
+2024-03-04,05:54:49,INFO,Application start
+2024-03-04,07:02:19,INFO,User 'admin' logged in
+2024-03-04,23:43:12,INFO,Scheduled maintenance mode activated
+2024-03-05,00:12:08,INFO,Scheduled maintenance mode activated
+2024-03-05,01:54:28,INFO,User 'guest' logged out
+2024-03-05,02:23:55,INFO,User 'guest' logged out
+2024-03-05,07:38:10,INFO,Application start
+2024-03-05,07:50:38,INFO,Scheduled maintenance mode activated
+2024-03-05,08:27:46,INFO,Application start
+2024-03-05,10:36:25,INFO,Application start
+2024-03-05,11:25:37,INFO,User 'admin' logged in
+2024-03-05,12:37:05,INFO,Application start
+2024-03-05,16:38:19,INFO,User 'guest' logged out
+2024-03-05,21:01:39,INFO,Starting data sync operation
+2024-03-06,00:21:17,INFO,Starting data sync operation
+2024-03-06,00:57:52,INFO,Application shutdown
+2024-03-06,04:28:43,INFO,Data sync operation retried
+2024-03-06,04:41:34,INFO,User 'guest' logged out
+2024-03-06,09:22:49,INFO,Data sync operation retried
+2024-03-06,14:15:14,INFO,Application shutdown
+2024-03-06,18:56:52,INFO,Starting data sync operation
+2024-03-06,21:03:10,INFO,Data sync operation retried
+2024-03-06,21:36:23,INFO,Data sync operation retried
+2024-03-06,22:40:08,INFO,Application start
+2024-03-07,02:50:59,INFO,Application resumed normal operation
+2024-03-07,03:33:45,INFO,User 'admin' logged in
+2024-03-07,04:21:18,INFO,Data sync operation retried
+2024-03-07,07:54:16,INFO,Starting data sync operation
+2024-03-07,13:49:08,INFO,User 'guest' logged out
+2024-03-07,15:30:09,INFO,Application start
+2024-03-07,16:05:46,INFO,User 'admin' logged in
+2024-03-07,18:11:11,INFO,Starting data sync operation
+2024-03-07,18:44:37,INFO,Scheduled maintenance mode activated
+2024-03-07,22:49:31,INFO,Data sync operation retried
+2024-03-07,23:49:05,INFO,Application shutdown
+2024-03-08,12:05:12,INFO,User 'admin' logged in
+2024-03-08,14:14:00,INFO,Scheduled maintenance mode activated
+2024-03-08,14:29:08,INFO,Scheduled maintenance mode activated
+2024-03-08,17:18:26,INFO,User 'guest' logged out
+2024-03-08,21:45:24,INFO,Application resumed normal operation
+2024-03-09,01:06:30,INFO,User 'guest' logged out
+2024-03-09,04:02:24,INFO,Data sync operation retried
+2024-03-09,06:56:52,INFO,Data sync operation retried
+2024-03-09,12:25:36,INFO,New user 'guest' created
+2024-03-09,16:02:23,INFO,Starting data sync operation
+2024-03-10,02:26:57,INFO,Application resumed normal operation
+2024-03-10,03:25:03,INFO,Application shutdown
+2024-03-10,04:53:59,INFO,Starting data sync operation
+2024-03-10,07:23:41,INFO,User 'guest' logged out
+2024-03-10,07:41:12,INFO,Application start
+2024-03-10,10:30:30,INFO,User 'admin' logged in
+2024-03-10,11:37:09,INFO,User 'guest' logged out
+2024-03-10,13:01:05,INFO,New user 'guest' created
+2024-03-10,16:22:24,INFO,User 'guest' logged out
+2024-03-10,18:28:34,INFO,Application shutdown
+2024-03-10,19:03:12,INFO,Scheduled maintenance mode activated
+2024-03-10,19:22:53,INFO,New user 'guest' created
+2024-03-10,21:14:24,INFO,New user 'guest' created
+2024-03-11,01:08:03,INFO,Application resumed normal operation
+2024-03-11,06:32:50,INFO,Application start
+2024-03-11,07:24:52,INFO,Scheduled maintenance mode activated
+2024-03-11,08:04:46,INFO,Scheduled maintenance mode activated
+2024-03-11,17:44:17,INFO,Starting data sync operation
+2024-03-11,21:45:46,INFO,User 'admin' logged in
+2024-03-11,23:04:21,INFO,User 'admin' logged in
+2024-03-12,01:13:08,INFO,Data sync operation retried
+2024-03-12,01:30:43,INFO,User 'guest' logged out
+2024-03-12,02:19:06,INFO,User 'admin' logged in
+2024-03-12,02:35:52,INFO,Starting data sync operation
+2024-03-12,04:23:55,INFO,Data sync operation retried
+2024-03-12,07:21:34,INFO,Data sync operation retried
+2024-03-12,09:32:12,INFO,User 'admin' logged in
+2024-03-12,11:12:43,INFO,Application start
+2024-03-12,18:17:48,INFO,Starting data sync operation
+2024-03-12,20:24:18,INFO,New user 'guest' created
+2024-03-12,21:39:16,INFO,Starting data sync operation
+2024-03-12,22:18:04,INFO,User 'admin' logged in
+2024-03-13,00:56:16,INFO,Scheduled maintenance mode activated
+2024-03-13,01:05:10,INFO,Data sync operation retried
+2024-03-13,02:08:58,INFO,Starting data sync operation
+2024-03-13,02:43:13,INFO,Data sync operation retried
+2024-03-13,11:56:17,INFO,User 'guest' logged out
+2024-03-13,12:10:16,INFO,Scheduled maintenance mode activated
+2024-03-13,12:29:54,INFO,Starting data sync operation
+2024-03-13,13:14:26,INFO,User 'admin' logged in
+2024-03-13,14:13:52,INFO,User 'guest' logged out
+2024-03-13,15:15:00,INFO,Application start
+2024-03-13,17:52:12,INFO,New user 'guest' created
+2024-03-13,21:20:19,INFO,New user 'guest' created
+2024-03-13,21:55:09,INFO,User 'admin' logged in
+2024-03-14,03:53:15,INFO,User 'admin' logged in
+2024-03-14,09:57:33,INFO,Scheduled maintenance mode activated
+2024-03-14,10:34:06,INFO,Starting data sync operation
+2024-03-14,11:52:32,INFO,Application start
+2024-03-14,17:47:30,INFO,Starting data sync operation
+2024-03-14,18:28:37,INFO,Application shutdown
+2024-03-14,23:38:36,INFO,Application start
+2024-03-15,02:43:50,INFO,Application resumed normal operation
+2024-03-15,07:46:03,INFO,Application start
+2024-03-15,09:32:32,INFO,User 'guest' logged out
+2024-03-15,11:31:21,INFO,Application shutdown
+2024-03-15,14:53:31,INFO,Starting data sync operation
+2024-03-15,19:53:25,INFO,Application shutdown
+2024-03-15,20:33:07,INFO,New user 'guest' created
+2024-03-15,23:36:59,INFO,User 'admin' logged in
+2024-03-16,02:43:19,INFO,Application resumed normal operation
+2024-03-16,05:30:21,INFO,Starting data sync operation
+2024-03-16,13:19:17,INFO,Data sync operation retried
+2024-03-16,13:38:38,INFO,User 'admin' logged in
+2024-03-16,14:50:20,INFO,User 'guest' logged out
+2024-03-16,18:39:29,INFO,New user 'guest' created
+2024-03-16,19:07:42,INFO,Data sync operation retried
+2024-03-17,01:04:05,INFO,Application shutdown
+2024-03-17,07:31:10,INFO,Data sync operation retried
+2024-03-17,09:21:55,INFO,Scheduled maintenance mode activated
+2024-03-17,21:20:21,INFO,New user 'guest' created
+2024-03-17,22:05:11,INFO,Starting data sync operation
+2024-03-17,23:19:25,INFO,User 'admin' logged in
+2024-03-18,12:09:11,INFO,User 'guest' logged out
+2024-03-18,15:10:23,INFO,Data sync operation retried
+2024-03-18,19:36:08,INFO,Starting data sync operation
+2024-03-18,22:52:07,INFO,Application resumed normal operation
+2024-03-18,23:16:38,INFO,User 'guest' logged out
+2024-03-19,02:14:29,INFO,Data sync operation retried
+2024-03-19,02:28:01,INFO,Scheduled maintenance mode activated
+2024-03-19,02:46:39,INFO,User 'admin' logged in
+2024-03-19,07:28:54,INFO,Application start
+2024-03-19,07:44:57,INFO,Data sync operation retried
+2024-03-19,07:46:57,INFO,User 'admin' logged in
+2024-03-19,08:36:25,INFO,Application shutdown
+2024-03-19,11:26:26,INFO,Application start
+2024-03-19,18:00:46,INFO,Scheduled maintenance mode activated
+2024-03-19,19:11:10,INFO,User 'guest' logged out
+2024-03-20,02:18:45,INFO,User 'guest' logged out
+2024-03-20,06:27:01,INFO,Scheduled maintenance mode activated
+2024-03-20,08:49:30,INFO,Starting data sync operation
+2024-03-20,14:25:59,INFO,User 'guest' logged out
+2024-03-20,17:16:17,INFO,Application start
+2024-03-20,19:48:20,INFO,Application shutdown
+2024-03-20,21:28:00,INFO,Scheduled maintenance mode activated
+2024-03-21,01:25:21,INFO,Application resumed normal operation
+2024-03-21,16:22:13,INFO,Starting data sync operation
+2024-03-21,16:46:01,INFO,Data sync operation retried
+2024-03-21,19:16:03,INFO,Application resumed normal operation
+2024-03-21,20:36:56,INFO,Scheduled maintenance mode activated
+2024-03-22,06:33:40,INFO,Data sync operation retried
+2024-03-22,08:54:43,INFO,Starting data sync operation
+2024-03-22,11:21:14,INFO,User 'guest' logged out
+2024-03-22,13:22:39,INFO,User 'admin' logged in
+2024-03-22,16:48:39,INFO,Data sync operation retried
+2024-03-22,21:09:23,INFO,Application resumed normal operation
+2024-03-23,07:19:23,INFO,New user 'guest' created
+2024-03-23,08:50:54,INFO,Starting data sync operation
+2024-03-23,13:52:27,INFO,Application resumed normal operation
+2024-03-23,19:14:05,INFO,Scheduled maintenance mode activated
+2024-03-23,20:05:38,INFO,Application resumed normal operation
+2024-03-24,00:10:50,INFO,New user 'guest' created
+2024-03-24,04:12:37,INFO,User 'admin' logged in
+2024-03-24,05:42:13,INFO,Application start
+2024-03-24,06:17:30,INFO,Application shutdown
+2024-03-24,12:27:04,INFO,User 'admin' logged in
+2024-03-24,14:07:02,INFO,New user 'guest' created
+2024-03-24,16:03:25,INFO,User 'admin' logged in
+2024-03-24,20:46:24,INFO,Starting data sync operation
+2024-03-24,22:45:21,INFO,New user 'guest' created
+2024-03-25,08:04:54,INFO,Scheduled maintenance mode activated
+2024-03-25,08:57:15,INFO,Scheduled maintenance mode activated
+2024-03-25,11:53:07,INFO,Scheduled maintenance mode activated
+2024-03-25,15:49:55,INFO,Scheduled maintenance mode activated
+2024-03-25,20:32:53,INFO,Data sync operation retried
+2024-03-25,23:03:09,INFO,Application resumed normal operation
+2024-03-25,23:40:04,INFO,New user 'guest' created
+2024-03-26,03:22:15,INFO,Data sync operation retried
+2024-03-26,10:45:26,INFO,Data sync operation retried
+2024-03-26,12:23:15,INFO,Application shutdown
+2024-03-26,14:22:17,INFO,User 'guest' logged out
+2024-03-26,15:34:43,INFO,Scheduled maintenance mode activated
+2024-03-26,21:28:39,INFO,Starting data sync operation
+2024-03-26,22:40:07,INFO,Scheduled maintenance mode activated

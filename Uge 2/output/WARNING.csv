@@ -1,0 +1,219 @@
+date,time,log_type,info
+2024-02-25,09:15:37,WARNING,Missing user settings; using defaults
+2024-02-25,09:17:45,WARNING,Low disk space
+2024-02-26,10:06:15,WARNING,Attempt to use deprecated feature
+2024-02-26,10:10:30,WARNING,Memory usage is high
+2024-02-26,12:02:14,WARNING,Missing user settings; using defaults
+2024-02-26,18:11:37,WARNING,Missing user settings; using defaults
+2024-02-26,19:03:49,WARNING,Attempt to use deprecated feature
+2024-02-26,19:06:19,WARNING,Attempt to use deprecated feature
+2024-02-26,20:35:11,WARNING,Attempt to use deprecated feature
+2024-02-27,02:09:10,WARNING,Attempt to use deprecated feature
+2024-02-27,08:37:34,WARNING,Low disk space
+2024-02-27,09:10:42,WARNING,Low disk space
+2024-02-27,10:02:05,WARNING,Memory usage is high
+2024-02-27,10:35:33,WARNING,Memory usage is high
+2024-02-27,11:50:28,WARNING,Attempt to use deprecated feature
+2024-02-27,12:57:16,WARNING,Missing user settings; using defaults
+2024-02-27,13:38:09,WARNING,Attempt to use deprecated feature
+2024-02-27,13:52:43,WARNING,Missing user settings; using defaults
+2024-02-27,17:51:38,WARNING,Missing user settings; using defaults
+2024-02-27,19:20:20,WARNING,Low disk space
+2024-02-28,05:33:59,WARNING,Low disk space
+2024-02-28,16:36:53,WARNING,Missing user settings; using defaults
+2024-02-28,16:41:27,WARNING,Memory usage is high
+2024-02-28,19:16:46,WARNING,Missing user settings; using defaults
+2024-02-28,22:39:51,WARNING,Attempt to use deprecated feature
+2024-02-29,01:42:12,WARNING,Missing user settings; using defaults
+2024-02-29,05:26:25,WARNING,Missing user settings; using defaults
+2024-02-29,11:24:19,WARNING,Missing user settings; using defaults
+2024-02-29,13:15:35,WARNING,Low disk space
+2024-02-29,13:22:47,WARNING,Low disk space
+2024-02-29,13:58:12,WARNING,Low disk space
+2024-02-29,20:46:23,WARNING,Memory usage is high
+2024-03-01,10:07:30,WARNING,Low disk space
+2024-03-01,14:01:23,WARNING,Low disk space
+2024-03-01,17:20:38,WARNING,Missing user settings; using defaults
+2024-03-01,17:36:04,WARNING,Missing user settings; using defaults
+2024-03-01,22:47:54,WARNING,Low disk space
+2024-03-01,23:09:35,WARNING,Memory usage is high
+2024-03-02,01:46:17,WARNING,Low disk space
+2024-03-02,10:18:30,WARNING,Memory usage is high
+2024-03-02,13:06:01,WARNING,Attempt to use deprecated feature
+2024-03-02,13:27:32,WARNING,Attempt to use deprecated feature
+2024-03-02,15:03:01,WARNING,Low disk space
+2024-03-02,17:58:52,WARNING,Memory usage is high
+2024-03-02,19:10:03,WARNING,Memory usage is high
+2024-03-03,01:07:03,WARNING,Missing user settings; using defaults
+2024-03-03,02:40:23,WARNING,Memory usage is high
+2024-03-03,04:22:53,WARNING,Missing user settings; using defaults
+2024-03-03,06:42:50,WARNING,Memory usage is high
+2024-03-03,10:27:48,WARNING,Low disk space
+2024-03-03,12:10:02,WARNING,Low disk space
+2024-03-03,22:52:43,WARNING,Attempt to use deprecated feature
+2024-03-04,03:07:29,WARNING,Missing user settings; using defaults
+2024-03-04,04:56:19,WARNING,Attempt to use deprecated feature
+2024-03-04,10:43:31,WARNING,Memory usage is high
+2024-03-04,11:33:58,WARNING,Memory usage is high
+2024-03-04,13:17:47,WARNING,Low disk space
+2024-03-04,22:00:13,WARNING,Attempt to use deprecated feature
+2024-03-05,04:29:57,WARNING,Attempt to use deprecated feature
+2024-03-05,05:32:33,WARNING,Memory usage is high
+2024-03-05,07:39:03,WARNING,Low disk space
+2024-03-05,08:55:20,WARNING,Low disk space
+2024-03-05,11:40:36,WARNING,Attempt to use deprecated feature
+2024-03-05,15:06:55,WARNING,Low disk space
+2024-03-05,23:06:43,WARNING,Memory usage is high
+2024-03-06,00:36:15,WARNING,Missing user settings; using defaults
+2024-03-06,10:28:27,WARNING,Low disk space
+2024-03-06,20:19:40,WARNING,Low disk space
+2024-03-06,21:40:31,WARNING,Missing user settings; using defaults
+2024-03-06,22:39:10,WARNING,Attempt to use deprecated feature
+2024-03-06,23:24:31,WARNING,Missing user settings; using defaults
+2024-03-07,05:49:23,WARNING,Missing user settings; using defaults
+2024-03-07,09:37:03,WARNING,Low disk space
+2024-03-07,10:11:59,WARNING,Missing user settings; using defaults
+2024-03-07,17:06:55,WARNING,Attempt to use deprecated feature
+2024-03-07,18:14:45,WARNING,Attempt to use deprecated feature
+2024-03-07,19:38:30,WARNING,Memory usage is high
+2024-03-08,01:59:59,WARNING,Low disk space
+2024-03-08,03:42:20,WARNING,Attempt to use deprecated feature
+2024-03-08,08:18:00,WARNING,Memory usage is high
+2024-03-08,08:45:34,WARNING,Missing user settings; using defaults
+2024-03-08,11:06:17,WARNING,Memory usage is high
+2024-03-08,13:23:51,WARNING,Missing user settings; using defaults
+2024-03-08,17:47:40,WARNING,Attempt to use deprecated feature
+2024-03-08,17:57:58,WARNING,Attempt to use deprecated feature
+2024-03-08,18:16:07,WARNING,Low disk space
+2024-03-08,20:31:36,WARNING,Memory usage is high
+2024-03-09,01:10:13,WARNING,Low disk space
+2024-03-09,06:41:43,WARNING,Memory usage is high
+2024-03-09,08:14:51,WARNING,Attempt to use deprecated feature
+2024-03-09,11:43:44,WARNING,Missing user settings; using defaults
+2024-03-09,17:48:53,WARNING,Memory usage is high
+2024-03-09,21:49:09,WARNING,Memory usage is high
+2024-03-10,01:05:05,WARNING,Missing user settings; using defaults
+2024-03-10,02:47:46,WARNING,Missing user settings; using defaults
+2024-03-10,08:44:54,WARNING,Attempt to use deprecated feature
+2024-03-10,10:17:17,WARNING,Low disk space
+2024-03-10,10:32:36,WARNING,Memory usage is high
+2024-03-10,13:39:02,WARNING,Low disk space
+2024-03-10,18:54:27,WARNING,Memory usage is high
+2024-03-11,00:30:16,WARNING,Missing user settings; using defaults
+2024-03-11,02:07:13,WARNING,Memory usage is high
+2024-03-11,03:29:00,WARNING,Attempt to use deprecated feature
+2024-03-11,06:23:50,WARNING,Missing user settings; using defaults
+2024-03-11,07:11:03,WARNING,Attempt to use deprecated feature
+2024-03-11,12:13:42,WARNING,Memory usage is high
+2024-03-11,12:47:17,WARNING,Low disk space
+2024-03-11,13:30:04,WARNING,Attempt to use deprecated feature
+2024-03-11,14:40:09,WARNING,Missing user settings; using defaults
+2024-03-12,03:18:58,WARNING,Memory usage is high
+2024-03-12,04:14:10,WARNING,Low disk space
+2024-03-12,05:35:29,WARNING,Memory usage is high
+2024-03-12,06:06:49,WARNING,Memory usage is high
+2024-03-12,06:15:58,WARNING,Attempt to use deprecated feature
+2024-03-12,06:40:38,WARNING,Attempt to use deprecated feature
+2024-03-12,11:45:34,WARNING,Low disk space
+2024-03-12,12:34:14,WARNING,Attempt to use deprecated feature
+2024-03-12,13:10:18,WARNING,Low disk space
+2024-03-12,16:46:48,WARNING,Missing user settings; using defaults
+2024-03-12,17:52:15,WARNING,Memory usage is high
+2024-03-13,01:38:42,WARNING,Low disk space
+2024-03-13,06:08:09,WARNING,Low disk space
+2024-03-13,10:09:37,WARNING,Attempt to use deprecated feature
+2024-03-13,10:15:19,WARNING,Memory usage is high
+2024-03-13,12:51:16,WARNING,Low disk space
+2024-03-13,18:27:35,WARNING,Attempt to use deprecated feature
+2024-03-13,18:36:40,WARNING,Missing user settings; using defaults
+2024-03-13,18:38:10,WARNING,Memory usage is high
+2024-03-13,21:27:52,WARNING,Missing user settings; using defaults
+2024-03-13,23:34:53,WARNING,Low disk space
+2024-03-14,00:24:06,WARNING,Low disk space
+2024-03-14,05:50:08,WARNING,Missing user settings; using defaults
+2024-03-14,11:21:11,WARNING,Memory usage is high
+2024-03-14,15:39:24,WARNING,Missing user settings; using defaults
+2024-03-14,18:50:00,WARNING,Low disk space
+2024-03-14,21:42:09,WARNING,Attempt to use deprecated feature
+2024-03-15,07:18:41,WARNING,Low disk space
+2024-03-15,08:37:39,WARNING,Memory usage is high
+2024-03-15,09:09:14,WARNING,Attempt to use deprecated feature
+2024-03-15,09:19:59,WARNING,Attempt to use deprecated feature
+2024-03-15,10:25:54,WARNING,Memory usage is high
+2024-03-15,16:44:44,WARNING,Low disk space
+2024-03-15,20:09:07,WARNING,Low disk space
+2024-03-16,00:23:55,WARNING,Attempt to use deprecated feature
+2024-03-16,01:29:30,WARNING,Missing user settings; using defaults
+2024-03-16,02:26:14,WARNING,Missing user settings; using defaults
+2024-03-16,10:43:58,WARNING,Attempt to use deprecated feature
+2024-03-16,11:28:09,WARNING,Memory usage is high
+2024-03-16,18:54:10,WARNING,Missing user settings; using defaults
+2024-03-16,20:02:28,WARNING,Low disk space
+2024-03-17,06:00:34,WARNING,Low disk space
+2024-03-17,10:30:37,WARNING,Low disk space
+2024-03-17,11:11:04,WARNING,Attempt to use deprecated feature
+2024-03-17,12:05:03,WARNING,Low disk space
+2024-03-17,12:58:19,WARNING,Memory usage is high
+2024-03-17,22:46:03,WARNING,Memory usage is high
+2024-03-17,23:11:08,WARNING,Memory usage is high
+2024-03-18,19:10:29,WARNING,Memory usage is high
+2024-03-19,02:41:18,WARNING,Attempt to use deprecated feature
+2024-03-19,02:41:59,WARNING,Attempt to use deprecated feature
+2024-03-19,07:03:38,WARNING,Attempt to use deprecated feature
+2024-03-19,12:33:41,WARNING,Attempt to use deprecated feature
+2024-03-19,13:38:49,WARNING,Low disk space
+2024-03-19,13:51:57,WARNING,Missing user settings; using defaults
+2024-03-19,16:46:50,WARNING,Memory usage is high
+2024-03-19,18:29:55,WARNING,Low disk space
+2024-03-19,19:39:28,WARNING,Memory usage is high
+2024-03-20,13:01:03,WARNING,Low disk space
+2024-03-20,18:14:09,WARNING,Attempt to use deprecated feature
+2024-03-20,18:57:27,WARNING,Memory usage is high
+2024-03-20,19:06:18,WARNING,Memory usage is high
+2024-03-20,21:08:40,WARNING,Attempt to use deprecated feature
+2024-03-20,21:43:45,WARNING,Low disk space
+2024-03-20,23:03:35,WARNING,Missing user settings; using defaults
+2024-03-20,23:36:27,WARNING,Missing user settings; using defaults
+2024-03-21,00:28:44,WARNING,Memory usage is high
+2024-03-21,03:31:32,WARNING,Missing user settings; using defaults
+2024-03-21,06:14:39,WARNING,Missing user settings; using defaults
+2024-03-21,08:18:19,WARNING,Memory usage is high
+2024-03-21,14:08:41,WARNING,Attempt to use deprecated feature
+2024-03-21,22:05:33,WARNING,Memory usage is high
+2024-03-21,23:09:36,WARNING,Attempt to use deprecated feature
+2024-03-22,02:55:17,WARNING,Low disk space
+2024-03-22,03:20:05,WARNING,Low disk space
+2024-03-22,07:42:37,WARNING,Attempt to use deprecated feature
+2024-03-22,09:08:12,WARNING,Low disk space
+2024-03-22,11:09:17,WARNING,Low disk space
+2024-03-22,21:13:28,WARNING,Attempt to use deprecated feature
+2024-03-22,21:29:50,WARNING,Missing user settings; using defaults
+2024-03-23,02:00:22,WARNING,Low disk space
+2024-03-23,02:07:40,WARNING,Low disk space
+2024-03-23,02:14:38,WARNING,Low disk space
+2024-03-23,03:40:23,WARNING,Missing user settings; using defaults
+2024-03-23,07:00:46,WARNING,Memory usage is high
+2024-03-23,09:34:36,WARNING,Memory usage is high
+2024-03-23,11:49:27,WARNING,Low disk space
+2024-03-23,12:07:36,WARNING,Memory usage is high
+2024-03-23,15:03:04,WARNING,Missing user settings; using defaults
+2024-03-23,15:22:02,WARNING,Memory usage is high
+2024-03-23,21:16:15,WARNING,Attempt to use deprecated feature
+2024-03-23,21:22:57,WARNING,Attempt to use deprecated feature
+2024-03-23,23:06:03,WARNING,Attempt to use deprecated feature
+2024-03-23,23:35:50,WARNING,Missing user settings; using defaults
+2024-03-24,04:24:34,WARNING,Missing user settings; using defaults
+2024-03-24,15:11:29,WARNING,Missing user settings; using defaults
+2024-03-24,19:24:45,WARNING,Memory usage is high
+2024-03-25,01:43:30,WARNING,Memory usage is high
+2024-03-25,02:50:02,WARNING,Memory usage is high
+2024-03-25,06:26:25,WARNING,Attempt to use deprecated feature
+2024-03-25,07:45:11,WARNING,Missing user settings; using defaults
+2024-03-25,09:43:20,WARNING,Missing user settings; using defaults
+2024-03-25,10:15:08,WARNING,Low disk space
+2024-03-25,15:29:42,WARNING,Missing user settings; using defaults
+2024-03-26,08:48:30,WARNING,Memory usage is high
+2024-03-26,14:13:36,WARNING,Low disk space
+2024-03-26,18:47:58,WARNING,Missing user settings; using defaults
+2024-03-26,23:27:23,WARNING,Missing user settings; using defaults
+2024-03-26,23:29:59,WARNING,Low disk space
