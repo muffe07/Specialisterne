@@ -13,7 +13,7 @@ class GUI:
         self.max_height = 20
         self.max_width = 5
         self.root = Tk.Tk()
-        self.current_dataframe = None
+        #self.current_dataframe = None
         self.logic = logic_instance
 
         self.create_title_bar()
@@ -81,17 +81,18 @@ class GUI:
 
     def on_enter_pressed(self,event):
         widget = event.widget
-        
+      
         cell_string = event.widget.get("1.0",'end-1c')
 
-        column = self.current_dataframe.columns.values[widget.grid_info()["column"]]
-        key_column = self.current_dataframe.columns.values[0]
+        column_name = widget.grid_info()["column"]
         row = widget.grid_info()["row"]
 
-        key = self.current_dataframe.loc[[row],[key_column]]
-        data = pd.DataFrame([[cell_string]], columns = [column], index = key.values[0])
+        self.logic.update_cell(cell_string, row, column_name)
+        #key_column = self.current_dataframe.columns.values[0]
+        #key = self.current_dataframe.loc[[row],[key_column]]
+        #data = pd.DataFrame([[cell_string]], columns = [column], index = key.values[0])
 
-        self.logic.crud.update_rows(self.table_name,data,key)
+        #self.logic.crud.update_rows(self.table_name,data,key)
         return "break"
 
     def run(self):

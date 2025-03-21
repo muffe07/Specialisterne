@@ -33,13 +33,13 @@ class CRUDsql:
         self.cursor.executemany(query,dataframe.to_numpy().tolist())
 
     def create_table_from_csv(self, file_path, replace = False):
+        table_name = file_path.name.split(".")[0]
+        self.validate_string(table_name, "can't convert filename to tablename (filename must be formatted as tablename.csv)")
         with open(file_path) as csv_file:
-            table_name = file_path.name.split(".")[0]
-            self.validate_string(table_name, "can't convert filename to tablename (filename must be formatted as tablename.csv)")
 
             dataframe = pd.read_csv(csv_file)
             headers = dataframe.columns.values
-            self.validate_iterable(headers, "invalid header")
+            self.validate_iterable(str(headers), "invalid header")
 
             pandas_to_msql_dtype = {
                 np.dtype('int64'): "INT",  
