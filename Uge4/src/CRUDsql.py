@@ -23,7 +23,6 @@ class CRUDsql:
     
     def validate_iterable(self, iter: iter, error_message):
         for i in iter:
-            print(i)
             self.validate_string(i, error_message)
     
 
@@ -41,13 +40,8 @@ class CRUDsql:
             headers = dataframe.columns.values
             self.validate_iterable(headers, "invalid header")
 
-            ##pandas_to_msql_dtype = {
-                #np.dtype('int64'): "INT",  
-                #np.dtype('float64'): "FLOAT"
-            #}
             schema = []
             for name, dtype in zip(headers,dataframe.dtypes):
-                #schema.append(f"{name} {pandas_to_msql_dtype.get(dtype, "VARCHAR(255)")}")
                 schema.append(f"{name} VARCHAR(255)")
             schema[0]+=" PRIMARY KEY"
             schema = ", ".join(schema)
@@ -93,7 +87,6 @@ class CRUDsql:
         choose_row = ", ".join([f"{i} = %s" for i in keys.columns.values])
         query = f"UPDATE {table_name} SET {set_value} WHERE {choose_row}"
 
-
         self.cursor.executemany(query,pd.concat([data, keys],axis = 1).to_numpy().tolist())
     
     def commit(self):
@@ -106,38 +99,28 @@ class CRUDsql:
         self.cursor.execute(f"SHOW TABLES")
         return([table[0] for table in self.cursor.fetchall()])
 
-def main():
+def test():
     interface = CRUDsql()
-    print(interface.get_database_tables())
-    print(interface.read_table("orders"))
-    exit()
     data_path = Path(__file__).parent.parent.joinpath("data")
+    interface.create_table_from_csv(data_path.joinpath("orders.csv"), replace = True)
+    assert interface.read_table("orders").shape==(100,4), "create or read error"
+    interface.update_rows(
+        "orders", 
+        pd.DataFrame([["a", "b"]],columns = ["customer", "product"]),
+        pd.DataFrame([["99"]],columns = ["id"])
+        )
+    new_line = (interface.read_table("orders").loc[99:])
+    new_line["id"] = 100
+    assert new_line["customer"].values[0] == "a", "update error"
+    interface.append_dataframe("orders", new_line)
+    assert interface.read_table("orders").shape==(101,4), "append error"
+
     try:
-        pass
-        interface.create_table_from_csv("malicious.csv", replace = True)
+        interface.create_table_from_csv(data_path.joinpath("malicious.csv"), replace = True)
     except Exception as e:
-        pass
-
-    interface.create_table_from_csv("orders_combined.csv", replace = True)
-    interface.create_table_from_csv("orders.csv", replace = True)
-
-    interface.delete_table("customers")
-    interface.create_table_from_csv("customers.csv", replace = False)
-    print(interface.read_table("customers"))
-    interface.create_table_from_csv("products.csv", replace = True)
-    interface.delete_rows("orders_combined", "ID>10")
-
-    new_data = pd.DataFrame(
-        [
-            (4,None,28,3),
-            (5,None,29,5)
-        ],
-        columns = ["id", "date_time", "customer", "product"]
-    )
-
-    interface.update_rows("orders",new_data)
-    print(interface.read_table("orders"))
+        malicious_exception = True
+    assert malicious_exception, "validation error"
 
 
 if __name__ == "__main__":
-    main()
+    test()
