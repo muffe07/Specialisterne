@@ -9,7 +9,7 @@ class CRUDsql:
         self.conn = SqlConnector("Uge2DB").authenticate()
         self.cursor = self.conn.cursor()
 
-    def validate_expression(self, string):
+    def validate_expression(self, string: str):
         match_variable = r"[A-Za-z][A-Za-z0-9]*"
         match_comparison = r"[=!<>]+|LIKE|IN"
         match_string = r".+"
@@ -17,37 +17,38 @@ class CRUDsql:
         match = re.match(f"^\\s*({match_variable})\\s*({match_comparison})\\s*({match_string})\\s*$",string)
         if(not match): raise Exception("invalid expression")
 
-    def validate_string(self, string, error_message):
+    def validate_string(self, string: str, error_message: str):
         match = re.match(r"^[A-Za-z][A-Za-z0-9_]*$",string)
-        if(not match): raise Exception(error_message)
+        if(not match): raise Exception((error_message,string))
     
-    def validate_iterable(self, iter, error_message):
+    def validate_iterable(self, iter: iter, error_message):
         for i in iter:
+            print(i)
             self.validate_string(i, error_message)
     
 
-    def append_dataframe(self, table_name, dataframe):
+    def append_dataframe(self, table_name:str, dataframe:pd.DataFrame):
         header = ", ".join(dataframe.columns.values)
         data_substitute = ", ".join(["%s"]*len(dataframe.columns))
         query = f"INSERT INTO {table_name} ({header}) VALUES ({data_substitute})"
         self.cursor.executemany(query,dataframe.to_numpy().tolist())
 
-    def create_table_from_csv(self, file_path, replace = False):
+    def create_table_from_csv(self, file_path:Path, replace = False):
         table_name = file_path.name.split(".")[0]
         self.validate_string(table_name, "can't convert filename to tablename (filename must be formatted as tablename.csv)")
         with open(file_path) as csv_file:
-
             dataframe = pd.read_csv(csv_file)
             headers = dataframe.columns.values
-            self.validate_iterable(str(headers), "invalid header")
+            self.validate_iterable(headers, "invalid header")
 
-            pandas_to_msql_dtype = {
-                np.dtype('int64'): "INT",  
-                np.dtype('float64'): "FLOAT"
-            }
+            ##pandas_to_msql_dtype = {
+                #np.dtype('int64'): "INT",  
+                #np.dtype('float64'): "FLOAT"
+            #}
             schema = []
             for name, dtype in zip(headers,dataframe.dtypes):
-                schema.append(f"{name} {pandas_to_msql_dtype.get(dtype, "VARCHAR(255)")}")
+                #schema.append(f"{name} {pandas_to_msql_dtype.get(dtype, "VARCHAR(255)")}")
+                schema.append(f"{name} VARCHAR(255)")
             schema[0]+=" PRIMARY KEY"
             schema = ", ".join(schema)
 
@@ -56,10 +57,9 @@ class CRUDsql:
             self.cursor.execute(f"CREATE TABLE {table_name} ({schema});")
             self.append_dataframe(table_name, dataframe)
 
-    def delete_table(self, table_name):
+    def delete_table(self, table_name:str):
         self.cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
         
-
     def read_table(self, table_name, expression = None, orderby = None):
         query = f"SELECT * FROM {table_name}"
 
@@ -76,7 +76,7 @@ class CRUDsql:
         data = pd.DataFrame(self.cursor.fetchall(),columns = header)
         return data
 
-    def delete_rows(self, table_name, keys):
+    def delete_rows(self, table_name:str, keys:pd.DataFrame):
         key = keys.columns.values[0]
 
         sql_keys = ", ".join([str(i) for i in keys[key].values])
@@ -84,7 +84,7 @@ class CRUDsql:
 
         self.cursor.execute(query)
 
-    def update_rows(self, table_name, data:pd.DataFrame, keys:pd.DataFrame):
+    def update_rows(self, table_name:str, data:pd.DataFrame, keys:pd.DataFrame):
         assert data.index == keys.index, "row index must match"
         self.validate_iterable(data.columns.values, "invalid header")
         self.validate_iterable(keys.columns.values, "invalid header")
@@ -92,6 +92,7 @@ class CRUDsql:
         set_value = ", ".join([f"{i} = %s" for i in data.columns.values])
         choose_row = ", ".join([f"{i} = %s" for i in keys.columns.values])
         query = f"UPDATE {table_name} SET {set_value} WHERE {choose_row}"
+
 
         self.cursor.executemany(query,pd.concat([data, keys],axis = 1).to_numpy().tolist())
     

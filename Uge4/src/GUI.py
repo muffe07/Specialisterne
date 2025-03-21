@@ -1,11 +1,6 @@
-from CRUDsql import CRUDsql
 import tkinter as Tk
 from tkinter import ttk
 from tkinter import Text
-from tkinter import filedialog
-from pathlib import Path
-import pandas as pd
-import numpy as np
 
 
 class GUI:
@@ -13,7 +8,6 @@ class GUI:
         self.max_height = 20
         self.max_width = 5
         self.root = Tk.Tk()
-        #self.current_dataframe = None
         self.logic = logic_instance
 
         self.create_title_bar()
@@ -22,6 +16,26 @@ class GUI:
         ttk.Button(self.root, text = "import csv",command = self.logic.open_file).grid(row = 0, column = 0)
         ttk.Button(self.root, text = "open sql",command = self.create_selection_menu).grid(row = 1, column = 0)
 
+
+    def slice_from_widget(self, widget, entire_row = False, entire_column = False):
+        data = self.logic.current_dataframe
+        if(not entire_row):
+            data = data.iloc[:, [widget.grid_info()["column"]]]
+        if(not entire_column):
+            data = data.iloc[[widget.grid_info()["row"]]]
+        return data
+
+    def delete_row(self,new_window,widget):
+        dataframe = self.slice_from_widget(widget,entire_row = True)
+        new_window.destroy()
+        self.logic.delete_row(dataframe)
+        self.update_table()
+
+    def add_row(self, popup_window, widget):
+        dataframe = self.slice_from_widget(widget, entire_row = True)
+        popup_window.destroy()
+        self.logic.add_row(dataframe)
+        self.update_table()
 
     def button_clicked(self,event, table_name, root):
         root.destroy()
@@ -71,8 +85,8 @@ class GUI:
         #create right_click menu
         popup = Tk.Toplevel(self.root)
         options = {
-            "Delete row": lambda e: self.logic.delete_row(popup, event.widget),
-            "Dublicate row":lambda e: self.logic.add_row(popup, event.widget),
+            "Delete row": lambda e: self.delete_row(popup, event.widget),
+            "Dublicate row":lambda e: self.add_row(popup, event.widget),
         }
         for i, (name, method) in enumerate(options.items()):
             button = ttk.Button(popup, text = name)
@@ -88,11 +102,6 @@ class GUI:
         row = widget.grid_info()["row"]
 
         self.logic.update_cell(cell_string, row, column_name)
-        #key_column = self.current_dataframe.columns.values[0]
-        #key = self.current_dataframe.loc[[row],[key_column]]
-        #data = pd.DataFrame([[cell_string]], columns = [column], index = key.values[0])
-
-        #self.logic.crud.update_rows(self.table_name,data,key)
         return "break"
 
     def run(self):
