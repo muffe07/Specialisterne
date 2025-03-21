@@ -9,11 +9,41 @@ class GUI:
         self.logic = logic_instance
 
         self.create_title_bar()
+        self.table_frame = None
+        self.header = None
 
 
     def create_title_bar(self):
         ttk.Button(self.root, text = "import csv",command = self.logic.open_file).grid(row = 0, column = 0)
         ttk.Button(self.root, text = "open sql",command = self.create_selection_menu).grid(row = 1, column = 0)
+
+    def create_table(self,dataframe):
+        if(self.table_frame): 
+            self.table_frame.destroy()
+        if(self.header):
+            for i in self.header:
+                i.destroy()
+        
+        height,width = dataframe.shape
+
+        self.header = []
+        grid = []
+        for x,column_name in enumerate(dataframe.columns.values):
+            T = Text(self.root, height = 1, width = 8)
+            T.insert(1.0, column_name) 
+            T.grid(row = 0, column = x+1)
+            self.header.append(T)
+
+        self.table_frame = Tk.Frame(self.root)
+        self.table_frame.grid(row = 1, column = 1, rowspan = height, columnspan = width)
+        for x in range(width):
+            for y in range(height):
+                T = Text(self.table_frame, height = 1, width = 8)
+                T.insert(1.0, dataframe.iloc[y,x])
+                T.bind("<Return>", self.on_return_pressed)
+                T.bind("<Button-3>", self.create_click_menu)
+                T.grid(row = y, column = x)
+                grid.append(T)
 
 
     def slice_from_widget(self, widget, entire_row = False, entire_column = False):
@@ -53,28 +83,6 @@ class GUI:
             button.grid(row = index, column=0)
 
 
-    def create_table(self,dataframe):
-        height,width = dataframe.shape
-
-        header = []
-        grid = []
-        for x,column_name in enumerate(dataframe.columns.values):
-            T = Text(self.root, height = 1, width = 8)
-            T.insert(1.0, column_name) 
-            T.grid(row = 0, column = x+1)
-            header.append(T)
-
-        self.table_frame = Tk.Frame(self.root)
-        self.table_frame.grid(row = 1, column = 1, rowspan = height, columnspan = width)
-        for x in range(width):
-            for y in range(height):
-                T = Text(self.table_frame, height = 1, width = 8)
-                T.insert(1.0, dataframe.iloc[y,x])
-                T.bind("<Return>", self.on_enter_pressed)
-                T.bind("<Button-3>", self.create_click_menu)
-                T.grid(row = y, column = x)
-                grid.append(T)
-        return(header, grid)
     
 
     def update_table(self):
@@ -94,16 +102,18 @@ class GUI:
             button.grid(row = i, column = 0)
 
 
-    def on_enter_pressed(self,event):
+    def on_return_pressed(self,event):
         widget = event.widget
       
-        cell_string = event.widget.get("1.0",'end-1c')
+        #reads reads a text widget
+        cell_string = event.widget.get("1.0",'end-1c') 
 
-        column_name = widget.grid_info()["column"]
-        row = widget.grid_info()["row"]
+        column_index = widget.grid_info()["column"]
+        row_index = widget.grid_info()["row"]
 
-        self.logic.update_cell(cell_string, row, column_name)
-        return "break"
+        self.logic.update_cell(cell_string, row_index, column_index)
+        #break to prevent <return> becomming a newline in the text box
+        return "break" 
 
 
     def run(self):

@@ -32,22 +32,23 @@ class Logic:
         self.create_table_from_database(current_path.stem)
 
 
-    def delete_row(self,dataframe):
+    def delete_row(self,dataframe:pd.DataFrame):
         self.crud.delete_rows(self.table_name, dataframe)
 
 
-    def add_row(self, dataframe):
+    def add_row(self, dataframe:pd.DataFrame):
         dataframe.iloc[:,0] = max(self.current_dataframe.iloc[:,0])+1
         self.crud.append_dataframe(self.table_name, dataframe)
 
 
     def update_cell(self, cell_string: str, row: int, column: int):
         column_name = self.current_dataframe.columns.values[column]
-        key = self.current_dataframe.iloc[[row],[0]]
-        data = pd.DataFrame([[cell_string]], columns = [column_name], index = key.values[0])
 
-        keys = pd.DataFrame(key.values, columns = key.columns, index = key.values[0])
-        self.crud.update_rows(self.table_name,data,keys)
+        key = self.current_dataframe.iloc[[row],[0]]
+        key.index = key.iloc[:,0] #set index = to id
+        data = pd.DataFrame([[cell_string]], columns = [column_name], index = key.index)
+
+        self.crud.update_rows(self.table_name,data,key)
 
 
 if (__name__ == "__main__"):

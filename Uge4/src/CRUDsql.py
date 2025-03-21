@@ -73,6 +73,7 @@ class CRUDsql:
         self.cursor.execute(query)
 
 
+    #note key currently does not support composite keys and should therefore only have 1 column
     def update_rows(self, table_name:str, data:pd.DataFrame, keys:pd.DataFrame):
         assert data.index == keys.index, "row index must match"
         self.validate_iterable(data.columns.values, "invalid header")
