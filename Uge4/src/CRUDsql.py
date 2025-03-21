@@ -30,18 +30,11 @@ class CRUDsql:
         header = ", ".join(dataframe.columns.values)
         data_substitute = ", ".join(["%s"]*len(dataframe.columns))
         query = f"INSERT INTO {table_name} ({header}) VALUES ({data_substitute})"
-        print(query)
-        print(dataframe)
-        try:
-            self.cursor.executemany(query,dataframe.to_numpy().tolist())
-        except Exception as e:
-            print(e)
-            exit()
+        self.cursor.executemany(query,dataframe.to_numpy().tolist())
 
     def create_table_from_csv(self, file_path, replace = False):
         with open(file_path) as csv_file:
             table_name = file_path.name.split(".")[0]
-            print(table_name)
             self.validate_string(table_name, "can't convert filename to tablename (filename must be formatted as tablename.csv)")
 
             dataframe = pd.read_csv(csv_file)
@@ -77,7 +70,6 @@ class CRUDsql:
         if(orderby):
             self.validate_string(orderby, "order by only supports simple column_names")
             query+=f" ORDER BY {orderby}"
-        print(query)
 
         self.cursor.execute(query)
         header = [i[0] for i in self.cursor.description]
@@ -89,7 +81,6 @@ class CRUDsql:
 
         sql_keys = ", ".join([str(i) for i in keys[key].values])
         query = f"DELETE FROM {table_name} WHERE {key} IN ({sql_keys})"
-        print(query)
 
         self.cursor.execute(query)
 
@@ -102,7 +93,6 @@ class CRUDsql:
         choose_row = ", ".join([f"{i} = %s" for i in keys.columns.values])
         query = f"UPDATE {table_name} SET {set_value} WHERE {choose_row}"
 
-        print(pd.concat([data,keys],axis = 1))
         self.cursor.executemany(query,pd.concat([data, keys],axis = 1).to_numpy().tolist())
     
     def commit(self):

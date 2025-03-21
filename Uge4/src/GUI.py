@@ -9,30 +9,26 @@ import numpy as np
 
 
 class GUI:
-    def __init__(self):
+    def __init__(self, logic_instance):
         self.max_height = 20
         self.max_width = 5
-        self.crud = CRUDsql()
         self.root = Tk.Tk()
         self.current_dataframe = None
+        self.logic = logic_instance
 
         self.create_title_bar()
 
     def create_title_bar(self):
-        ttk.Button(self.root, text = "import csv",command = self.open_file).grid(row = 0, column = 0)
+        ttk.Button(self.root, text = "import csv",command = self.logic.open_file).grid(row = 0, column = 0)
         ttk.Button(self.root, text = "open sql",command = self.create_selection_menu).grid(row = 1, column = 0)
 
-    def open_file(self):
-        current_path = Path(filedialog.askopenfilename())
-        self.crud.create_table_from_csv(current_path, replace = True)
-        self.create_table_from_database(current_path.stem)
 
     def button_clicked(self,event, table_name, root):
         root.destroy()
-        self.create_table_from_database(table_name)
+        self.logic.create_table_from_database(table_name)
     
     def create_selection_menu(self):
-        table_names = self.crud.get_database_tables()
+        table_names = self.logic.crud.get_database_tables()
         popup = Tk.Toplevel(self.root)
         for index, table_name in enumerate(table_names):
             button = ttk.Button(popup, text = table_name)
@@ -66,38 +62,17 @@ class GUI:
                 T.grid(row = y, column = x)
                 grid.append(T)
         return(header, grid)
-
-    def slice_from_widget(self, widget, entire_row = False, entire_column = False):
-        data = self.current_dataframe
-        if(not entire_row):
-            data = data.iloc[:, [widget.grid_info()["column"]]]
-        if(not entire_column):
-            data = data.iloc[[widget.grid_info()["row"]]]
-        return data
     
     def update_table(self):
         self.table_frame.destroy()
-        self.create_table_from_database(self.table_name)
-
-    def delete_row(self,new_window,widget):
-        data = self.slice_from_widget(widget,entire_row = True)
-        self.crud.delete_rows(self.table_name, data)
-        new_window.destroy()
-        self.update_table()
-
-    def add_row(self, new_window, widget, offset = 0):
-        dataframe = self.slice_from_widget(widget, entire_row = True)
-        new_window.destroy()
-        dataframe.iloc[:,0] = max(self.current_dataframe.iloc[:,0])+1
-        self.crud.append_dataframe(self.table_name, dataframe)
-        self.update_table()
+        self.logic.create_table_from_database(self.logic.table_name)
 
     def create_click_menu(self, event):
         #create right_click menu
         popup = Tk.Toplevel(self.root)
         options = {
-            "Delete row": lambda e: self.delete_row(popup,event.widget),
-            "Dublicate row":lambda e: self.add_row(popup, event.widget),
+            "Delete row": lambda e: self.logic.delete_row(popup, event.widget),
+            "Dublicate row":lambda e: self.logic.add_row(popup, event.widget),
         }
         for i, (name, method) in enumerate(options.items()):
             button = ttk.Button(popup, text = name)
@@ -116,24 +91,8 @@ class GUI:
         key = self.current_dataframe.loc[[row],[key_column]]
         data = pd.DataFrame([[cell_string]], columns = [column], index = key.values[0])
 
-        self.crud.update_rows(self.table_name,data,key)
+        self.logic.crud.update_rows(self.table_name,data,key)
         return "break"
 
-    def confirm_selection(self, text_widget):
-        print(text_widget.grid_info())
-
-    def create_table_from_database(self, database_table):
-        dataframe = self.crud.read_table(database_table)
-        self.current_dataframe = dataframe
-        self.create_table(dataframe)
-        self.table_name = database_table
-    
     def run(self):
         self.root.mainloop()
-
-def main():
-    gui = GUI()
-    gui.run()
-
-if (__name__ == "__main__"):
-    main()
