@@ -9,18 +9,12 @@ class CRUDsql:
         self.conn = SqlConnector("Uge2DB").authenticate()
         self.cursor = self.conn.cursor()
 
-    def validate_expression(self, string: str):
-        match_variable = r"[A-Za-z][A-Za-z0-9]*"
-        match_comparison = r"[=!<>]+|LIKE|IN"
-        match_string = r".+"
-
-        match = re.match(f"^\\s*({match_variable})\\s*({match_comparison})\\s*({match_string})\\s*$",string)
-        if(not match): raise Exception("invalid expression")
-
+    #validates a string and makes sure it only supports safe sql characters
     def validate_string(self, string: str, error_message: str):
         match = re.match(r"^[A-Za-z][A-Za-z0-9_]*$",string)
         if(not match): raise Exception((error_message,string))
     
+
     def validate_iterable(self, iter: iter, error_message):
         for i in iter:
             self.validate_string(i, error_message)
@@ -31,6 +25,7 @@ class CRUDsql:
         data_substitute = ", ".join(["%s"]*len(dataframe.columns))
         query = f"INSERT INTO {table_name} ({header}) VALUES ({data_substitute})"
         self.cursor.executemany(query,dataframe.to_numpy().tolist())
+
 
     def create_table_from_csv(self, file_path:Path, replace = False):
         table_name = file_path.name.split(".")[0]
@@ -51,15 +46,13 @@ class CRUDsql:
             self.cursor.execute(f"CREATE TABLE {table_name} ({schema});")
             self.append_dataframe(table_name, dataframe)
 
+
     def delete_table(self, table_name:str):
         self.cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
         
-    def read_table(self, table_name, expression = None, orderby = None):
-        query = f"SELECT * FROM {table_name}"
 
-        if(expression):
-            self.validate_expression(expression)
-            query+=f" WHERE {expression}"
+    def read_table(self, table_name:str, orderby = None):
+        query = f"SELECT * FROM {table_name}"
 
         if(orderby):
             self.validate_string(orderby, "order by only supports simple column_names")
@@ -70,6 +63,7 @@ class CRUDsql:
         data = pd.DataFrame(self.cursor.fetchall(),columns = header)
         return data
 
+
     def delete_rows(self, table_name:str, keys:pd.DataFrame):
         key = keys.columns.values[0]
 
@@ -77,6 +71,7 @@ class CRUDsql:
         query = f"DELETE FROM {table_name} WHERE {key} IN ({sql_keys})"
 
         self.cursor.execute(query)
+
 
     def update_rows(self, table_name:str, data:pd.DataFrame, keys:pd.DataFrame):
         assert data.index == keys.index, "row index must match"
@@ -89,15 +84,19 @@ class CRUDsql:
 
         self.cursor.executemany(query,pd.concat([data, keys],axis = 1).to_numpy().tolist())
     
+
     def commit(self):
         self.conn.commit()
+
 
     def __del__(self):
         self.conn.commit()
 
+
     def get_database_tables(self):
         self.cursor.execute(f"SHOW TABLES")
         return([table[0] for table in self.cursor.fetchall()])
+
 
 def test():
     interface = CRUDsql()
