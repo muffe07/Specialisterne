@@ -30,13 +30,18 @@ class CRUDsql:
         header = ", ".join(dataframe.columns.values)
         data_substitute = ", ".join(["%s"]*len(dataframe.columns))
         query = f"INSERT INTO {table_name} ({header}) VALUES ({data_substitute})"
+        print(query)
+        print(dataframe)
+        try:
+            self.cursor.executemany(query,dataframe.to_numpy().tolist())
+        except Exception as e:
+            print(e)
+            exit()
 
-        self.cursor.executemany(query,dataframe.to_numpy().tolist())
-
-    def create_table_from_csv(self, file_name, replace = False):
-        data_path = Path(__file__).parent.parent.joinpath("data")
-        with open(data_path.joinpath(file_name)) as csv_file:
-            table_name = file_name.split(".")[0]
+    def create_table_from_csv(self, file_path, replace = False):
+        with open(file_path) as csv_file:
+            table_name = file_path.name.split(".")[0]
+            print(table_name)
             self.validate_string(table_name, "can't convert filename to tablename (filename must be formatted as tablename.csv)")
 
             dataframe = pd.read_csv(csv_file)
@@ -55,7 +60,7 @@ class CRUDsql:
 
             if(replace): 
                 self.cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
-            self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} ({schema});")
+            self.cursor.execute(f"CREATE TABLE {table_name} ({schema});")
             self.append_dataframe(table_name, dataframe)
 
     def delete_table(self, table_name):
@@ -70,32 +75,52 @@ class CRUDsql:
             query+=f" WHERE {expression}"
 
         if(orderby):
-            self.validate_string(orderby, "order by only supports simple columns_names")
+            self.validate_string(orderby, "order by only supports simple column_names")
             query+=f" ORDER BY {orderby}"
+        print(query)
 
         self.cursor.execute(query)
         header = [i[0] for i in self.cursor.description]
-        return(pd.DataFrame(self.cursor.fetchall(),columns = header))
+        data = pd.DataFrame(self.cursor.fetchall(),columns = header)
+        return data
 
-    def delete_rows(self, table_name, expression = None):
-        if(expression):
-            self.validate_expression(expression)
-            self.cursor.execute(f"DELETE FROM {table_name} WHERE {expression}")
-        else:
-            self.cursor.execute(f"DELETE FROM {table_name}")
+    def delete_rows(self, table_name, keys):
+        key = keys.columns.values[0]
 
-    def update_rows(self, table_name, dataframe):
-        primary_key = dataframe.columns.values[0]
-        keys = tuple(dataframe[primary_key])
-        self.delete_rows(table_name,expression = f"{primary_key} IN {str(keys)}")
-        self.append_dataframe(table_name, dataframe)
+        sql_keys = ", ".join([str(i) for i in keys[key].values])
+        query = f"DELETE FROM {table_name} WHERE {key} IN ({sql_keys})"
+        print(query)
+
+        self.cursor.execute(query)
+
+    def update_rows(self, table_name, data:pd.DataFrame, keys:pd.DataFrame):
+        assert data.index == keys.index, "row index must match"
+        self.validate_iterable(data.columns.values, "invalid header")
+        self.validate_iterable(keys.columns.values, "invalid header")
+
+        set_value = ", ".join([f"{i} = %s" for i in data.columns.values])
+        choose_row = ", ".join([f"{i} = %s" for i in keys.columns.values])
+        query = f"UPDATE {table_name} SET {set_value} WHERE {choose_row}"
+
+        print(pd.concat([data,keys],axis = 1))
+        self.cursor.executemany(query,pd.concat([data, keys],axis = 1).to_numpy().tolist())
+    
+    def commit(self):
+        self.conn.commit()
 
     def __del__(self):
         self.conn.commit()
 
+    def get_database_tables(self):
+        self.cursor.execute(f"SHOW TABLES")
+        return([table[0] for table in self.cursor.fetchall()])
+
 def main():
     interface = CRUDsql()
-
+    print(interface.get_database_tables())
+    print(interface.read_table("orders"))
+    exit()
+    data_path = Path(__file__).parent.parent.joinpath("data")
     try:
         pass
         interface.create_table_from_csv("malicious.csv", replace = True)
