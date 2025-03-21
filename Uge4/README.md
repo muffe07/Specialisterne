@@ -11,7 +11,7 @@ installation:
 - cd Specialisterne/Uge4
 
 kør programmet:
--python logic.py
+- python logic.py
 
 kendte fejl:
 - hvis man sletter den sisdte række giver det fejl
