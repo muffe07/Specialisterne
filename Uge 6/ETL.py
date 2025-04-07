@@ -48,12 +48,6 @@ def access_api(table):
             string = API.read_order_items()
     return string
 
-
-def product_rename(dataframe):
-    regex = r"^[a-zA-Z0-9]+ (.*) - \d{4}$"
-    dataframe["product_name"] = dataframe["product_name"].str.replace(regex, r"\1",regex = True)
-
-
 def sql_2_pandas(table_name):
     cursor.execute(f"USE productdb")
     cursor.execute(f"DESCRIBE {table_name}")
@@ -103,9 +97,33 @@ def convert_to_multiindex(df):
     if(type(df.index) != pd.MultiIndex):
         df.index = pd.MultiIndex.from_arrays([df.index], names=[df.index.name])
 
+def product_rename(dataframe):
+    regex = r"^[a-zA-Z0-9]+ (.*) - \d{4}$"
+    dataframe["product_name"] = dataframe["product_name"].str.replace(regex, r"\1",regex = True)
+
+def replace_phone_number(dataframe, column):
+    def replace_function(string):
+        if(string == "NULL"): return string
+        return("+1"+"".join(re.findall(r'\d', string)))
+    dataframe[column] = dataframe[column].map(replace_function)
+
+def create_foreign_key(table1, table2, column_name, primary_key):
+    query = f"""
+        ALTER TABLE {table1} 
+        ADD CONSTRAINT fk_{table1}_{column_name} 
+        FOREIGN KEY ({column_name}) 
+        REFERENCES {table2}({primary_key})
+    """
+    local_cursor.execute(query)
+    
+def update_string_to_date(table, column):
+    query = f"UPDATE {table} SET {column} = STR_TO_DATE({column}, '%d/%m/%Y')"
+    local_cursor.execute(query)
+    query = f"ALTER TABLE {table} MODIFY COLUMN {column} DATE"
+    local_cursor.execute(query)
+
 def get_data():
     tables = {}
-
 
     csv_path = Path(__file__).parent/"data"
     stores = pd.read_csv(csv_path/"stores.csv")
@@ -130,72 +148,75 @@ def get_data():
     tables["brands"] = brands
     tables["categories"] = categories
     tables["products"] = products
+    return(tables)
 
-    stores.index.rename("store_id", inplace = True)
-    staffs.index.rename("staff_id", inplace = True)
-    stores.index += 1
-    staffs.index += 1
+#renames all indexes to correct key (multiindex in case of composite key)
+def key_restructuring(tables):
+    #rename index to key
+    tables["stores"].index.rename("store_id", inplace = True)
+    tables["staffs"].index.rename("staff_id", inplace = True)
 
-    orders.set_index("order_id", inplace = True)
-    customers.set_index("customer_id", inplace = True)
-    order_items.drop(["item_id"], axis = 1, inplace = True)
-    order_items.set_index(["order_id","product_id"],inplace = True)
+    tables["orders"].set_index("order_id", inplace = True)
+    tables["customers"].set_index("customer_id", inplace = True)
 
-    brands.set_index("brand_id", inplace = True)
-    categories.set_index("category_id", inplace = True)
-    products.set_index("product_id", inplace = True)
+    tables["brands"].set_index("brand_id", inplace = True)
+    tables["categories"].set_index("category_id", inplace = True)
+    tables["products"].set_index("product_id", inplace = True)
 
-    stores_mapping = stores["name"].to_dict()
+    #change to 1 indexing
+    tables["stores"].index += 1
+    tables["staffs"].index += 1
+
+    #change rename forgein keys to use id instead of name
+    #store id
+    stores_mapping = tables["stores"]["name"].to_dict()
     stores_mapping = {v:k for k,v in stores_mapping.items()}
-    stocks["store_id"] = stocks["store_name"].map(stores_mapping)
-    stocks.drop(["store_name"], axis = 1, inplace = True)
-    stocks.set_index(["store_id", "product_id"], inplace = True)
+    tables["stocks"]["store_id"] = tables["stocks"]["store_name"].map(stores_mapping)
+    tables["stocks"].drop(["store_name"], axis = 1, inplace = True)
 
-    staffs_mapping = staffs["name"].to_dict()
+    tables["orders"]["store_id"] = tables["orders"]["store"].map(stores_mapping)
+    tables["orders"].drop(["store"], axis = 1, inplace = True)
+
+    tables["staffs"]["store_id"] = tables["staffs"]["store_name"].map(stores_mapping)
+    tables["staffs"].drop(["store_name"], inplace = True, axis = 1)
+
+    #staff id
+    staffs_mapping = tables["staffs"]["name"].to_dict()
     staffs_mapping = {v:k for k,v in staffs_mapping.items()}
-    orders["staff_id"] = orders["staff_name"].map(staffs_mapping)
-    orders.drop(["staff_name"], axis = 1, inplace = True)
+    tables["orders"]["staff_id"] = tables["orders"]["staff_name"].map(staffs_mapping)
+    tables["orders"].drop(["staff_name"], axis = 1, inplace = True)
 
-    orders["store_id"] = orders["store"].map(stores_mapping)
-    orders.drop(["store"], axis = 1, inplace = True)
+    #set multiindex after renamed foreign keys
+    tables["order_items"].set_index(["order_id","product_id"],inplace = True) 
+    tables["stocks"].set_index(["store_id", "product_id"], inplace = True) 
 
-    staffs.drop(["street"], axis = 1, inplace = True)
+    #drop other unnecessary columns
+    #equal to store street
+    tables["staffs"].drop(["street"], axis = 1, inplace = True) 
 
-    staffs["store_id"] = staffs["store_name"].map(stores_mapping)
-    staffs.drop(["store_name"], inplace = True, axis = 1)
-    staffs["manager_id"] = staffs["manager_id"].astype('Int64')
+    #not needed as order_id and product_id works as a key
+    tables["order_items"].drop(["item_id"], axis = 1, inplace = True)
     
-
-    product_rename(tables["products"])
-
-
-    def replace_phone_number(dataframe, column):
-        def replace_function(string):
-            if(string == "NULL"): return string
-            return("+1"+"".join(re.findall(r'\d', string)))
-        dataframe[column] = dataframe[column].map(replace_function)
-
-    replace_phone_number(customers,"phone")
-    replace_phone_number(staffs,"phone")
-    replace_phone_number(stores,"phone")
-
+    
+def create_schema(tables):
     database_name = "bicycledb"
     create_database(database_name)
     for k, v in tables.items():
         convert_to_multiindex(v)
         create_table(v,k,database_name)
 
+def data_standardization_before_creation(tables):
+    #change from int64 to Int64 to handle null values better
+    tables["staffs"]["manager_id"] = tables["staffs"]["manager_id"].astype('Int64')
 
-        pass
-    def create_foreign_key(table1, table2, column_name, primary_key):
-        query = f"""
-            ALTER TABLE {table1} 
-            ADD CONSTRAINT fk_{table1}_{column_name} 
-            FOREIGN KEY ({column_name}) 
-            REFERENCES {table2}({primary_key})
-        """
-        local_cursor.execute(query)
-        
+    product_rename(tables["products"])
+
+    replace_phone_number(tables["customers"],"phone")
+    replace_phone_number(tables["staffs"],"phone")
+    replace_phone_number(tables["stores"],"phone")
+
+def data_standadization_after_creation():
+    #foreign key requires both tables to exist
     create_foreign_key("products", "categories", "category_id", "category_id")
     create_foreign_key("products", "brands", "brand_id", "brand_id")
     create_foreign_key("orders", "customers", "customer_id", "customer_id")
@@ -208,23 +229,20 @@ def get_data():
     create_foreign_key("order_items", "products", "product_id", "product_id")
     create_foreign_key("orders", "stores", "store_id", "store_id")
 
-    
-    def update_string_to_date(table, column):
-        query = f"UPDATE {table} SET {column} = STR_TO_DATE({column}, '%d/%m/%Y')"
-        local_cursor.execute(query)
-        query = f"ALTER TABLE {table} MODIFY COLUMN {column} DATE"
-        local_cursor.execute(query)
-
-
+    #pandas does not support dates without time therefore dtype is changed after creation in SQL
     update_string_to_date("orders", "order_date")
     update_string_to_date("orders", "required_date")
     update_string_to_date("orders", "shipped_date")
+
+
+if __name__ == "__main__":
+    tables = get_data()
+    key_restructuring(tables)
+    data_standardization_before_creation(tables)
+    create_schema(tables)
+    data_standadization_after_creation()
+
     local_connector.commit()
-
-
-
-
-get_data()
-local_connector.commit()
-local_connector.close()
-connector.close()
+    local_connector.close()
+    #connector does not need to commit as there should be no changes to source database
+    connector.close()
