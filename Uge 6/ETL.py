@@ -156,6 +156,8 @@ def get_data():
     products = sql_to_pandas("products")
     stocks = sql_to_pandas("stocks")
 
+    print(customers)
+    exit()
     tables = {}
     tables["stocks"] = stocks
     tables["stores"] = stores
