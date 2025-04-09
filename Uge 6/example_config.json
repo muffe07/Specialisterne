@@ -1,0 +1,10 @@
+{
+    "local_database_name": "bicycledb",
+    "local_SQL_user": "root",
+    "local_SQL_password": "password",
+
+    "remote_IP": "192.168.20.171",
+    "remote_database_name": "productdb",
+    "remote_SQL_user": "MySQL_username",
+    "remote_SQL_password": "other_password"
+}

@@ -6,24 +6,41 @@ import mysql.connector
 from io import StringIO
 import requests
 import re
-import polars as pl
 import json
+import time
 
-serverIP = "192.168.20.171"
+try:
+    with open(Path(__file__).parent/"config.json") as file:
+        config = json.load(file)
+except FileNotFoundError as e:
+    print("config file not found")
+    print("you can use example_config.json to create a config.json file")
+    exit()
+
+last_time = time.time()
+def get_time_diff():
+    global last_time
+    now = time.time()
+    diff = now - last_time
+    last_time = now
+    return diff
+
+#serverIP = "192.168.20.171"
 local_connector = mysql.connector.connect(
     host="localhost",
     port="3306",
-    user="root",
-    password="Velkommen25"
+    user=config["local_SQL_user"],
+    password=config["local_SQL_password"]
 )
+print(f"local_host_connection: {get_time_diff():.2f}s")
 
 local_cursor = local_connector.cursor()
 try:
     connector = mysql.connector.connect(
-        host=serverIP,
+        host=config["remote_IP"],
         port="3306",
-        user="curseist",
-        password="curseword",
+        user=config["remote_SQL_user"],
+        password=config["remote_SQL_password"],
         connect_timeout=1
     )
     cursor = connector.cursor()
@@ -31,25 +48,31 @@ except Exception as e:
     connector = local_connector
     print("SQL failed to connect to server. Using localhost")
     cursor = local_cursor
+print(f"remote_SQL_connection: {get_time_diff():.2f}s")
 
 
 def access_api(table):
     try:
-        url = f"http://{serverIP}:8000/{table}"
+        url = f"http://{config["remote_IP"]}:8000/{table}"
         response = requests.get(url,timeout=1)
         string = json.loads(response.content.decode("utf-8"))
     except Exception as e:
         print("failed to access API. Using localhost")
-        if(table == "orders"):
-            string = API.read_orders()
-        if(table == "customers"):
-            string = API.read_customers()
-        if(table == "order_items"):
-            string = API.read_order_items()
+        match table:
+            case "orders":
+                string = API.read_orders()
+            case "customers":
+                string = API.read_customers()
+            case "order_items":
+                string = API.read_order_items()
+            case _:
+                print("failed to find table using local API")
+                print("exiting")
+                exit()
     return string
 
-def sql_2_pandas(table_name):
-    cursor.execute(f"USE productdb")
+def sql_to_pandas(table_name):
+    cursor.execute(f"USE {config["remote_database_name"]}")
     cursor.execute(f"DESCRIBE {table_name}")
     header = np.array(cursor.fetchall())
     cursor.execute(f"select * from {table_name}")
@@ -68,10 +91,6 @@ def create_table(dataframe, table_name, database):
 
     #create table and header
     column_dtypes = pd.concat([dataframe.index.dtypes, dataframe.dtypes])
-    if(len(dataframe.index.levels) == 1):
-        use_auto_increment = True
-    else:
-        use_auto_increment = False
     
     key = ", ".join([str(k) for k,v in dataframe.index.dtypes.items()])
     dtype_dict = {"int64":"int", "Int64":"int", "object":"varchar(255)","float64":"decimal(16,2)"}
@@ -85,7 +104,7 @@ def create_table(dataframe, table_name, database):
     query = f"INSERT INTO {table_name} ({", ".join(column_dtypes.keys())}) VALUES ({data_substitude})"
     data = dataframe.reset_index().replace({np.nan:None,"NULL":None}).to_numpy().tolist()
     local_cursor.executemany(query,data)
-    print(f"added {table_name} to {database}")
+    #print(f"added {table_name} to {database}")
 
     #make key autoincrement
     if(len(dataframe.index.levels)==1):
@@ -123,8 +142,6 @@ def update_string_to_date(table, column):
     local_cursor.execute(query)
 
 def get_data():
-    tables = {}
-
     csv_path = Path(__file__).parent/"data"
     stores = pd.read_csv(csv_path/"stores.csv")
     staffs = pd.read_csv(csv_path/"staffs.csv")
@@ -134,11 +151,12 @@ def get_data():
     customers = pd.read_json(StringIO(access_api("customers")))
     order_items = pd.read_json(StringIO(access_api("order_items")))
 
-    brands = sql_2_pandas("brands")
-    categories = sql_2_pandas("categories")
-    products = sql_2_pandas("products")
-    stocks = sql_2_pandas("stocks")
+    brands = sql_to_pandas("brands")
+    categories = sql_to_pandas("categories")
+    products = sql_to_pandas("products")
+    stocks = sql_to_pandas("stocks")
 
+    tables = {}
     tables["stocks"] = stocks
     tables["stores"] = stores
     tables["staffs"] = staffs
@@ -150,7 +168,7 @@ def get_data():
     tables["products"] = products
     return(tables)
 
-#renames all indexes to correct key (multiindex in case of composite key)
+#renames all dataframe indexes to correct table key (multiindex in case of composite key)
 def key_restructuring(tables):
     #rename index to key
     tables["stores"].index.rename("store_id", inplace = True)
@@ -191,7 +209,7 @@ def key_restructuring(tables):
     tables["stocks"].set_index(["store_id", "product_id"], inplace = True) 
 
     #drop other unnecessary columns
-    #equal to store street
+    #equal to stores["street"]
     tables["staffs"].drop(["street"], axis = 1, inplace = True) 
 
     #not needed as order_id and product_id works as a key
@@ -199,7 +217,7 @@ def key_restructuring(tables):
     
     
 def create_schema(tables):
-    database_name = "bicycledb"
+    database_name = config["local_database_name"]
     create_database(database_name)
     for k, v in tables.items():
         convert_to_multiindex(v)
@@ -228,6 +246,7 @@ def data_standadization_after_creation():
     create_foreign_key("order_items", "orders", "order_id", "order_id")
     create_foreign_key("order_items", "products", "product_id", "product_id")
     create_foreign_key("orders", "stores", "store_id", "store_id")
+    print(f"foreign keys added: {get_time_diff():.2f}s")
 
     #pandas does not support dates without time therefore dtype is changed after creation in SQL
     update_string_to_date("orders", "order_date")
@@ -237,10 +256,15 @@ def data_standadization_after_creation():
 
 if __name__ == "__main__":
     tables = get_data()
+    print(f"data retrived: {get_time_diff():.2f}s")
     key_restructuring(tables)
+    print(f"keys restructered: {get_time_diff():.2f}s")
     data_standardization_before_creation(tables)
+    print(f"data standardized1: {get_time_diff():.2f}s")
     create_schema(tables)
+    print(f"schema created: {get_time_diff():.2f}s")
     data_standadization_after_creation()
+    print(f"data standardized2: {get_time_diff():.2f}s")
 
     local_connector.commit()
     local_connector.close()
