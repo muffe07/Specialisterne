@@ -1,5 +1,5 @@
 The goal of this program is to perform an ETL process. 
-We gather data from multiple sources. Perform transformations to normalize the data and store it in a database.  
+We gather data from multiple sources. Perform transformations to standadize the data and store it in a database.  
 
 Sources:  
  - CSV  
@@ -52,7 +52,7 @@ Transformations:
 
     1st normal form:  
         - No duplicate rows (partially satisfied)
-        - atomic values (already satisfied)
+        - atomic values
         - unique column names (already satisfied)  
         - indepentent of order (already satisfied)  
 
@@ -63,7 +63,7 @@ Transformations:
         - no transitive depedency   
 
     4th normal form:  
-        - no multi-valued dependencies  
+        - no multi-valued dependencies (already satisfied)
     
     5th normal form:  
         - no join dependencies (already satisfied)
@@ -76,9 +76,9 @@ Main issues:
     Staff has a reference to street, and a reference to store. staffs street is the same as stores street. This violates 3rd normal form.  
     This is a cause for data duplication. If this is not fixed when you update. the data you could only update 1 instance. Creating contradictions in the dataset.
 
-    Orders store and staffs store are the same this violates 3rd normal form if we assume they are the same. However this is not necesarrily always the case. If an order always has staff and order store and staff store are the same this column would need to be removed. However I assume orders can have null staff if it has not been processed yet.  
+    Orders store and staffs store are the same. This violates 3rd normal form, if we assume they are the same. However this is not necesarrily always the case. If an order always has staff and order store and staff store are the same this column would need to be removed. However it could be possible, that orders can have no staff if it has not been processed yet.  
 
-    Product name depends on brand and year. This violates 4th normal form.  
+    Product name depends on brand and year. This violates 1st normal form.  
     This is an issue of data duplication. 
 
 
@@ -95,7 +95,7 @@ Changes:
 
     Phone numbers have their formatting removed and country code has been added. '+1' For all current data.
 
-    Order items have their items_id column removed as its unnecesarry. The only information this column gives is what order items have been added to customers basket. This has been considered too arbitary to be useful. 
+    Order items have their items_id column removed as its unnecesarry. The only information this column gives is what order items have been added to customers basket. This has been considered too arbitrary to be useful. 
     If this information would be useful in future analytics, then it will require alot of additional information that needs to be collected anyways. 
 
     staff have their steet column removed as this street is not the street of their address but the street of the store they work in. As such the street is stored in the stores tables.
@@ -123,8 +123,6 @@ Total time usage: 1.80s.
 
 Most performance is as expected except foreign keys and date datatypes. 2ommon for these 2 functions is that they alter the tables after creation. Foreign keys requires 2 tables to exist.
 For the date; Pandas does not support the type needed in MySQL.
-
-
 
 Final Entity-Relationship Diagram
 ![Entity-Relationship Diagram png](ERD.png)

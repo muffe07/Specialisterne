@@ -25,7 +25,6 @@ def get_time_diff():
     last_time = now
     return diff
 
-#serverIP = "192.168.20.171"
 local_connector = mysql.connector.connect(
     host="localhost",
     port="3306",
@@ -37,14 +36,15 @@ print(f"local_host_connection: {get_time_diff():.2f}s")
 local_cursor = local_connector.cursor()
 try:
     connector = mysql.connector.connect(
-        host=config["remote_IP"],
         port="3306",
+        host=config["remote_IP"],
         user=config["remote_SQL_user"],
         password=config["remote_SQL_password"],
-        connect_timeout=1
+        connect_timeout=5
     )
     cursor = connector.cursor()
 except Exception as e:
+    print(e)
     connector = local_connector
     print("SQL failed to connect to server. Using localhost")
     cursor = local_cursor
@@ -117,7 +117,7 @@ def convert_to_multiindex(df):
         df.index = pd.MultiIndex.from_arrays([df.index], names=[df.index.name])
 
 def product_rename(dataframe):
-    regex = r"^[a-zA-Z0-9]+ (.*) - \d{4}$"
+    regex = r"^[a-zA-Z0-9]+ (.*) - [\d/]+"
     dataframe["product_name"] = dataframe["product_name"].str.replace(regex, r"\1",regex = True)
 
 def replace_phone_number(dataframe, column):
@@ -145,19 +145,20 @@ def get_data():
     csv_path = Path(__file__).parent/"data"
     stores = pd.read_csv(csv_path/"stores.csv")
     staffs = pd.read_csv(csv_path/"staffs.csv")
+    print(f"CSV retrived: {get_time_diff():.2f}s")
 
     #bit wierd you can convert json to tables. But because the json is made from csv files it works
     orders = pd.read_json(StringIO(access_api("orders")))
     customers = pd.read_json(StringIO(access_api("customers")))
     order_items = pd.read_json(StringIO(access_api("order_items")))
+    print(f"API retrived: {get_time_diff():.2f}s")
 
     brands = sql_to_pandas("brands")
     categories = sql_to_pandas("categories")
     products = sql_to_pandas("products")
     stocks = sql_to_pandas("stocks")
+    print(f"SQL retrived: {get_time_diff():.2f}s")
 
-    print(customers)
-    exit()
     tables = {}
     tables["stocks"] = stocks
     tables["stores"] = stores
@@ -176,6 +177,11 @@ def key_restructuring(tables):
     tables["stores"].index.rename("store_id", inplace = True)
     tables["staffs"].index.rename("staff_id", inplace = True)
 
+    #change to 1-indexing
+    tables["stores"].index += 1
+    tables["staffs"].index += 1
+
+    #change column to key
     tables["orders"].set_index("order_id", inplace = True)
     tables["customers"].set_index("customer_id", inplace = True)
 
@@ -183,14 +189,11 @@ def key_restructuring(tables):
     tables["categories"].set_index("category_id", inplace = True)
     tables["products"].set_index("product_id", inplace = True)
 
-    #change to 1 indexing
-    tables["stores"].index += 1
-    tables["staffs"].index += 1
-
-    #change rename forgein keys to use id instead of name
+    #rename forgein keys to use id instead of name
     #store id
     stores_mapping = tables["stores"]["name"].to_dict()
     stores_mapping = {v:k for k,v in stores_mapping.items()}
+
     tables["stocks"]["store_id"] = tables["stocks"]["store_name"].map(stores_mapping)
     tables["stocks"].drop(["store_name"], axis = 1, inplace = True)
 
@@ -198,20 +201,21 @@ def key_restructuring(tables):
     tables["orders"].drop(["store"], axis = 1, inplace = True)
 
     tables["staffs"]["store_id"] = tables["staffs"]["store_name"].map(stores_mapping)
-    tables["staffs"].drop(["store_name"], inplace = True, axis = 1)
+    tables["staffs"].drop(["store_name"], axis = 1, inplace = True)
 
     #staff id
     staffs_mapping = tables["staffs"]["name"].to_dict()
     staffs_mapping = {v:k for k,v in staffs_mapping.items()}
+
     tables["orders"]["staff_id"] = tables["orders"]["staff_name"].map(staffs_mapping)
     tables["orders"].drop(["staff_name"], axis = 1, inplace = True)
 
-    #set multiindex after renamed foreign keys
+    #set composite keys after renamed foreign keys
     tables["order_items"].set_index(["order_id","product_id"],inplace = True) 
     tables["stocks"].set_index(["store_id", "product_id"], inplace = True) 
 
     #drop other unnecessary columns
-    #equal to stores["street"]
+    #equals to stores["street"]
     tables["staffs"].drop(["street"], axis = 1, inplace = True) 
 
     #not needed as order_id and product_id works as a key
@@ -258,7 +262,6 @@ def data_standadization_after_creation():
 
 if __name__ == "__main__":
     tables = get_data()
-    print(f"data retrived: {get_time_diff():.2f}s")
     key_restructuring(tables)
     print(f"keys restructered: {get_time_diff():.2f}s")
     data_standardization_before_creation(tables)
