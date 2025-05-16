@@ -23,10 +23,10 @@ class Load():
 
         self.cursor = self.connector.cursor()
 
-    def create_database(self, name):
-        self.cursor.execute(f"DROP DATABASE IF EXISTS {name}")
-        self.cursor.execute(f"CREATE DATABASE {name}")
-        self.connector.commit()
+    #def create_database(self, name):
+        #self.cursor.execute(f"DROP DATABASE IF EXISTS {name}")
+        #self.cursor.execute(f"CREATE DATABASE {name}")
+        #self.connector.commit()
 
     def create_table(self, dataframe, table_name, database):
         #setup
@@ -79,7 +79,7 @@ class Load():
     def create_schema(self, tables):
         try:
             database_name = self.config["local_database_name"]
-            self.create_database(database_name)
+            #self.create_database(database_name)
             for k, v in tables.items():
                 self.convert_to_multiindex(v)
                 self.create_table(v,k,database_name)
